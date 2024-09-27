@@ -1,8 +1,8 @@
 use reqwest::Client;
 use serde::{Deserialize, Serialize};
-use std::fs::read_to_string;
 use std::error::Error;
 use std::fmt;
+use std::fs::read_to_string;
 
 #[derive(Serialize, Deserialize, Debug)]
 struct Data {
@@ -124,9 +124,8 @@ async fn main() {
 
     match cloudflare_response {
         Ok(get_response) => {
-            let json: serde_json::Value =
-                get_response.json().await.expect("Failed to parse JSON");
-            
+            let json: serde_json::Value = get_response.json().await.expect("Failed to parse JSON");
+
             if let Some(record) = json["result"].get(0) {
                 if let Some(record_id) = record["id"].as_str() {
                     println!("Get RecordID: {}", record_id);
