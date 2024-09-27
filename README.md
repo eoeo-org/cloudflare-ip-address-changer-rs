@@ -49,6 +49,6 @@ IPv4 / IPV6 アドレスを自動で取得して、Cloudflare の設定を自動
 4. ビルドが成功すると、target/release/ ディレクトリに実行ファイルが生成されます。
 
     ```bash
-    target/release/cloudflare-ip-address-changer
+    target/release/cloudflare-ip-address-changer-rs
     ```
 5. 実行ファイルを実行するために、config.toml ファイルをプロジェクトのルートディレクトリに配置して、前述の設定を行います。
