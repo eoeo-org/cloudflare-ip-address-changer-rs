@@ -80,14 +80,14 @@ jobs:
           if-no-files-found: error
       - name: Upload to release
         if: ${{ inputs.tag-name }}
-        working-directory: dist/
+        working-directory: target/${{ matrix.platform.target }}/release/
         run: |
-          if [ -e target/${{ matrix.platform.target }}/release/cloudflare-ip-address-changer-rs.exe ]; then
+          if [ -e cloudflare-ip-address-changer-rs.exe ]; then
             filename="cloudflare-ip-address-changer-rs-${{ inputs.tag-name }}-${{ matrix.platform.target }}.exe"
-            mv target/${{ matrix.platform.target }}/release/cloudflare-ip-address-changer-rs.exe "$filename"
+            mv cloudflare-ip-address-changer-rs.exe "$filename"
             gh release upload ${{ inputs.tag-name }} "$filename"#${{ matrix.platform.target }} --clobber
           else
             filename="cloudflare-ip-address-changer-rs-${{ inputs.tag-name }}-${{ matrix.platform.target }}"
-            mv target/${{ matrix.platform.target }}/release/cloudflare-ip-address-changer-rs "$filename"
+            mv cloudflare-ip-address-changer-rs "$filename"
             gh release upload ${{ inputs.tag-name }} "$filename"#${{ matrix.platform.target }} --clobber
           fi
