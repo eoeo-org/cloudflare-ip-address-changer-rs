@@ -1,0 +1,92 @@
+name: build
+on:
+  push:
+    branches:
+      - 'main'
+  pull_request:
+  workflow_call:
+    inputs:
+      tag-name:
+        required: true
+        type: string
+
+jobs:
+  build:
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: false
+      matrix:
+        platform:
+          - target: aarch64-unknown-linux-gnu
+            os: ubuntu-22.04
+            command: cross
+          - target: aarch64-unknown-linux-musl
+            os: ubuntu-22.04
+            command: cross
+          - target: x86_64-unknown-linux-gnu
+            os: ubuntu-22.04
+            command: cargo
+          - target: x86_64-unknown-linux-musl
+            os: ubuntu-22.04
+            command: cargo
+          - target: aarch64-apple-darwin
+            os: macos-14
+            command: cargo
+          - target: x86_64-apple-darwin
+            os: macos-14
+            command: cargo
+          - target: x86_64-pc-windows-msvc
+            os: windows-2022
+            command: cargo
+          - target: x86_64-pc-windows-gnu
+            os: windows-2022
+            command: cargo
+    runs-on: ${{ matrix.platform.os }}
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GH_REPO: ${{ github.repository }}
+    defaults:
+      run:
+        shell: bash -xe {0}
+    steps:
+      - name: Install musl tools
+        if: matrix.platform.target == 'x86_64-unknown-linux-musl'
+        run: |
+          sudo apt-get install -y musl-tools --no-install-recommends
+      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+        with:
+          filter: tree:0
+          fetch-depth: 0
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          target: ${{ matrix.platform.target }}
+      - uses: Swatinem/rust-cache@23bce251a8cd2ffc3c1075eaa2367cf899916d84 # v2.7.3
+        with:
+          key: ${{ matrix.platform.target }}
+      - name: Install cross
+        if: ${{ matrix.platform.command == 'cross' }}
+        uses: taiki-e/install-action@a6c0fffc64cb6b30fcb84295daa5f6d7da05fc62 # v2.44.3
+        with:
+          tool: cross
+      - run: ${{ matrix.platform.command }} build --locked --release --target ${{ matrix.platform.target }}
+      - uses: actions/upload-artifact@50769540e7f4bd5e21e526ee35c689e35e0d6874 # v4.4.0
+        with:
+          name: ${{ matrix.platform.target }}
+          path: |
+            target/${{ matrix.platform.target }}/release/cloudflare-ip-address-changer-rs
+            target/${{ matrix.platform.target }}/release/cloudflare-ip-address-changer-rs.exe
+          if-no-files-found: error
+      - name: Upload to release
+        if: ${{ inputs.tag-name }}
+        working-directory: target/${{ matrix.platform.target }}/release/
+        run: |
+          if [ -e cloudflare-ip-address-changer-rs.exe ]; then
+            filename="cloudflare-ip-address-changer-rs-${{ inputs.tag-name }}-${{ matrix.platform.target }}.exe"
+            mv cloudflare-ip-address-changer-rs.exe "$filename"
+            gh release upload ${{ inputs.tag-name }} "$filename"#${{ matrix.platform.target }} --clobber
+          else
+            filename="cloudflare-ip-address-changer-rs-${{ inputs.tag-name }}-${{ matrix.platform.target }}"
+            mv cloudflare-ip-address-changer-rs "$filename"
+            gh release upload ${{ inputs.tag-name }} "$filename"#${{ matrix.platform.target }} --clobber
+          fi
