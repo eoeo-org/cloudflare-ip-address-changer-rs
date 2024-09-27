@@ -12,6 +12,7 @@ on:
 
 jobs:
   build:
+    if: ${{ !( github.workflow == 'build' && startsWith(github.event.head_commit.message, 'release:') && github.event.head_commit.author.name == 'eoeo-release[bot]' ) }}
     permissions:
       contents: write
     strategy:
@@ -19,16 +20,16 @@ jobs:
       matrix:
         platform:
           - target: aarch64-unknown-linux-gnu
-            os: ubuntu-22.04
+            os: ubuntu-24.04
             command: cross
           - target: aarch64-unknown-linux-musl
-            os: ubuntu-22.04
+            os: ubuntu-24.04
             command: cross
           - target: x86_64-unknown-linux-gnu
-            os: ubuntu-22.04
+            os: ubuntu-24.04
             command: cargo
           - target: x86_64-unknown-linux-musl
-            os: ubuntu-22.04
+            os: ubuntu-24.04
             command: cargo
           - target: aarch64-apple-darwin
             os: macos-14
@@ -77,16 +78,3 @@ jobs:
             target/${{ matrix.platform.target }}/release/cloudflare-ip-address-changer-rs
             target/${{ matrix.platform.target }}/release/cloudflare-ip-address-changer-rs.exe
           if-no-files-found: error
-      - name: Upload to release
-        if: ${{ inputs.tag-name }}
-        working-directory: target/${{ matrix.platform.target }}/release/
-        run: |
-          if [ -e cloudflare-ip-address-changer-rs.exe ]; then
-            filename="cloudflare-ip-address-changer-rs-${{ inputs.tag-name }}-${{ matrix.platform.target }}.exe"
-            mv cloudflare-ip-address-changer-rs.exe "$filename"
-            gh release upload ${{ inputs.tag-name }} "$filename"#${{ matrix.platform.target }} --clobber
-          else
-            filename="cloudflare-ip-address-changer-rs-${{ inputs.tag-name }}-${{ matrix.platform.target }}"
-            mv cloudflare-ip-address-changer-rs "$filename"
-            gh release upload ${{ inputs.tag-name }} "$filename"#${{ matrix.platform.target }} --clobber
-          fi
