@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.0](https://github.com/eoeo-org/cloudflare-ip-address-changer-rs/compare/v0.1.0...v0.2.0) (2024-09-27)
+
+
+### Continuous Integration
+
+* add upload to release step ([aba67a7](https://github.com/eoeo-org/cloudflare-ip-address-changer-rs/commit/aba67a7c7ad5e2b2c4b27c6402c06e5516643e0b))
+
 ## [0.1.0](https://github.com/eoeo-org/cloudflare-ip-address-changer-rs/compare/v0.1.0...v0.1.0) (2024-09-27)
 
 
