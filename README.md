@@ -1,6 +1,6 @@
 # Cloudflare IP Address Changer - Rust
 
-IPv4 / IPV6 アドレスを自動で取得して、Cloudflare の設定を自動変更するツールです。  
+IPv4 / IPV6 アドレスを自動で取得して、Cloudflare の設定を自動変更するツールです。
 このプログラムは、定期的に自動設定するようにするために作られた物です。
 
 ## 使い方
@@ -38,7 +38,7 @@ IPv4 / IPV6 アドレスを自動で取得して、Cloudflare の設定を自動
 2. このリポジトリをクローンします。
 
     ```bash
-    git clone https://github.com/Zel9278/cloudflare-ip-address-changer-rs.git
+    git clone https://github.com/eoeo-org/cloudflare-ip-address-changer-rs.git
     cd cloudflare-ip-address-changer-rs
     ```
 3. 必要な依存関係をインストールします。Cargo.toml ファイルに定義されている依存関係は、自動でインストールされます。
