@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.5.0](https://github.com/eoeo-org/cloudflare-ip-address-changer-rs/compare/v0.4.0...v0.5.0) (2024-09-28)
+
+
+### ⚠ BREAKING CHANGES
+
+* change config structure
+
+### Dependencies
+
+* pin dependencies ([#7](https://github.com/eoeo-org/cloudflare-ip-address-changer-rs/issues/7)) ([fe530c3](https://github.com/eoeo-org/cloudflare-ip-address-changer-rs/commit/fe530c3cdf1db57a18fb28a9ec9a368d86870b82))
+
+
+### Code Refactoring
+
+* add json schema for config.toml ([5848d76](https://github.com/eoeo-org/cloudflare-ip-address-changer-rs/commit/5848d762802640847ff0dc6afddd5746412e9758))
+* change config structure ([6a2106f](https://github.com/eoeo-org/cloudflare-ip-address-changer-rs/commit/6a2106f7e9b23275d1b876ca27a6a78d9487ef90))
+
 ## [0.4.0](https://github.com/eoeo-org/cloudflare-ip-address-changer-rs/compare/v0.3.0...v0.4.0) (2024-09-27)
 
 
