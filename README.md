@@ -11,8 +11,8 @@ IPv4 / IPV6 アドレスを自動で取得して、Cloudflare の設定を自動
     zone_id = "ドメインページの右側にAPI ゾーン IDがあるのでそれを持ってきます"
     dns_record = "対象の DNS レコードを指定します 例：<サブドメイン>.c30.life, 例2: c30.life"
     dns_type = "AAAAかAを指定します、AAAAの場合はipv6が自動で割り当てられます、Aの場合はipv4が自動で割り当てられます"
-    dns_proxy = trueかfalseを指定します、この設定はCloudFlareのプロキシを使用するかの設定です
-    auth_key = "CloudFlareAPIキーを指定します"
+    dns_proxy = trueかfalseを指定します、この設定はCloudflareのプロキシを使用するかの設定です
+    auth_key = "CloudflareAPIキーを指定します"
     ```
   API キーは以下の手順で入手できます。
   1. アカウントページの `ホーム`
