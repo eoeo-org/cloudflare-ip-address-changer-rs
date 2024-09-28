@@ -8,11 +8,14 @@ IPv4 / IPV6 アドレスを自動で取得して、Cloudflare の設定を自動
 1. [リリースページ](https://github.com/Zel9278/cloudflare-ip-address-changer-rs/releases/latest)から対象の実行ファイルをダウンロードします
 2.  `config.toml` を編集します
     ```
-    zone_id = "ドメインページの右側にAPI ゾーン IDがあるのでそれを持ってきます"
-    dns_record = "対象の DNS レコードを指定します 例：<サブドメイン>.c30.life, 例2: c30.life"
-    dns_type = "AAAAかAを指定します、AAAAの場合はipv6が自動で割り当てられます、Aの場合はipv4が自動で割り当てられます"
-    dns_proxy = trueかfalseを指定します、この設定はCloudflareのプロキシを使用するかの設定です
-    auth_key = "CloudflareAPIキーを指定します"
+	[account]
+	auth_key = "CloudflareAPIキーを指定します"
+	zone_id = "ドメインページの右側にAPI ゾーン IDがあるのでそれを持ってきます"
+
+	[dns]
+	record = "対象の DNS レコードを指定します 例：<サブドメイン>.c30.life, 例2: c30.life"
+	type = "AAAAかAを指定します、AAAAの場合はipv6が自動で割り当てられます、Aの場合はipv4が自動で割り当てられます"
+	proxied = trueかfalseを指定します、この設定はCloudflareのプロキシを使用するかの設定です
     ```
   API キーは以下の手順で入手できます。
   1. アカウントページの `ホーム`
