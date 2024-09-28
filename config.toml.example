@@ -1,5 +1,8 @@
-zone_id = "Cloudflare Zone ID"
-dns_record = "DNS Record"
-dns_type = "DNS Type"
-dns_proxy = "if you want to proxy the record through Cloudflare, set to true"
+[account]
 auth_key = "Cloudflare Auth Key"
+zone_id = "Cloudflare Zone ID"
+
+[dns]
+record = "DNS Record"
+type = "DNS Type"
+proxied = if you want to proxy the record through Cloudflare, set to true

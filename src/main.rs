@@ -1,8 +1,9 @@
+mod config;
+
 use reqwest::Client;
 use serde::{Deserialize, Serialize};
 use std::error::Error;
-use std::fmt;
-use std::fs::read_to_string;
+use config::{Config, DnsType};
 
 #[derive(Serialize, Deserialize, Debug)]
 struct Data {
@@ -11,45 +12,6 @@ struct Data {
     content: String,
     ttl: i32,
     proxied: bool,
-}
-
-#[derive(Deserialize, Debug)]
-struct Config {
-    zone_id: String,
-    dns_record: String,
-    auth_key: String,
-    dns_type: String,
-    dns_proxy: bool,
-}
-
-#[derive(Debug)]
-struct InvalidConfigError(String);
-
-impl fmt::Display for InvalidConfigError {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{}", self.0)
-    }
-}
-
-impl Error for InvalidConfigError {}
-
-impl Config {
-    fn validate(&self) -> Result<(), InvalidConfigError> {
-        match self.dns_type.as_str() {
-            "A" | "AAAA" => Ok(()),
-            _ => Err(InvalidConfigError(format!(
-                "Invalid DNS type: {}. Must be 'A' or 'AAAA'.",
-                self.dns_type
-            ))),
-        }
-    }
-}
-
-fn read_config(path: &str) -> Result<Config, Box<dyn Error>> {
-    let content = read_to_string(path)?;
-    let config: Config = toml::from_str(&content)?;
-    config.validate()?;
-    Ok(config)
 }
 
 async fn fetch_ip(client: &Client, url: &str) -> Result<String, Box<dyn Error>> {
@@ -73,33 +35,27 @@ async fn fetch_ip(client: &Client, url: &str) -> Result<String, Box<dyn Error>> 
 async fn main() {
     let client = Client::new();
 
-    let mut config: Config = match read_config("config.toml") {
-        Ok(cfg) => cfg,
-        Err(e) => {
-            eprintln!("Failed to load configuration: {}", e);
-            return;
-        }
-    };
+    let mut config: Config = Config::new();
 
     println!("Loaded Configuration: {:#?}", config);
 
     let mut ip = String::new();
 
-    if config.dns_type == "AAAA" {
+    if config.dns.r#type == DnsType::AAAA {
         match fetch_ip(&client, "https://api6.ipify.org").await {
             Ok(ipv6) => ip = ipv6,
             Err(_) => {
                 eprintln!("Failed to retrieve IPv6 address. Falling back to IPv4.");
                 if let Ok(ipv4) = fetch_ip(&client, "https://api.ipify.org").await {
                     ip = ipv4;
-                    config.dns_type = "A".to_string();
+                    config.dns.r#type = DnsType::A;
                 } else {
                     eprintln!("Failed to retrieve both IPv6 and IPv4 addresses.");
                     return;
                 }
             }
         }
-    } else if config.dns_type == "A" {
+    } else if config.dns.r#type == DnsType::A {
         match fetch_ip(&client, "https://api.ipify.org").await {
             Ok(ipv4) => ip = ipv4,
             Err(_) => {
@@ -113,12 +69,14 @@ async fn main() {
 
     let get_url = format!(
         "https://api.cloudflare.com/client/v4/zones/{}/dns_records?name={}&type={}",
-        config.zone_id, config.dns_record, config.dns_type
+        config.account.zone_id,
+        config.dns.record,
+        config.dns.r#type.as_str()
     );
 
     let cloudflare_response = client
         .get(&get_url)
-        .header("Authorization", "Bearer ".to_owned() + &config.auth_key)
+        .header("Authorization", "Bearer ".to_owned() + &config.account.auth_key)
         .send()
         .await;
 
@@ -130,21 +88,21 @@ async fn main() {
                 if let Some(record_id) = record["id"].as_str() {
                     println!("Get RecordID: {}", record_id);
                     let data = Data {
-                        r#type: config.dns_type.clone(),
-                        name: config.dns_record.clone(),
+                        r#type: config.dns.r#type.as_str().to_string(),
+                        name: config.dns.record.clone(),
                         content: ip.trim().to_string(),
                         ttl: json["result"][0]["ttl"].as_i64().unwrap() as i32,
-                        proxied: config.dns_proxy,
+                        proxied: config.dns.proxied,
                     };
 
                     let put_url = format!(
                         "https://api.cloudflare.com/client/v4/zones/{}/dns_records/{}",
-                        config.zone_id, record_id
+                        config.account.zone_id, record_id
                     );
 
                     match client
                         .put(&put_url)
-                        .header("Authorization", "Bearer ".to_owned() + &config.auth_key)
+                        .header("Authorization", "Bearer ".to_owned() + &config.account.auth_key)
                         .json(&data)
                         .send()
                         .await
@@ -167,21 +125,21 @@ async fn main() {
                 println!("No DNS records found. Creating a new record...");
 
                 let data = Data {
-                    r#type: config.dns_type.clone(),
-                    name: config.dns_record.clone(),
+                    r#type: config.dns.r#type.as_str().to_string(),
+                    name: config.dns.record.clone(),
                     content: ip.trim().to_string(),
                     ttl: 120,
-                    proxied: config.dns_proxy,
+                    proxied: config.dns.proxied,
                 };
 
                 let post_url = format!(
                     "https://api.cloudflare.com/client/v4/zones/{}/dns_records",
-                    config.zone_id
+                    config.account.zone_id
                 );
 
                 match client
                     .post(&post_url)
-                    .header("Authorization", "Bearer ".to_owned() + &config.auth_key)
+                    .header("Authorization", "Bearer ".to_owned() + &config.account.auth_key)
                     .json(&data)
                     .send()
                     .await
