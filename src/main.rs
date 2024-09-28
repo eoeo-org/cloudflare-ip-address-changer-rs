@@ -33,6 +33,9 @@ async fn fetch_ip(client: &Client, url: &str) -> Result<String, Box<dyn Error>> 
 
 #[tokio::main]
 async fn main() {
+    let is_debug = cfg!(debug_assertions);
+    config::generate_schema(is_debug);
+
     let client = Client::new();
 
     let mut config: Config = Config::new();

@@ -1,3 +1,5 @@
+#:schema https://raw.githubusercontent.com/eoeo-org/cloudflare-ip-address-changer-rs/refs/heads/main/schema.json
+
 [account]
 auth_key = "Cloudflare Auth Key"
 zone_id = "Cloudflare Zone ID"

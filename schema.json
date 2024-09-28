@@ -1,0 +1,60 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Config",
+  "type": "object",
+  "required": [
+    "account",
+    "dns"
+  ],
+  "properties": {
+    "account": {
+      "$ref": "#/definitions/AccountConfig"
+    },
+    "dns": {
+      "$ref": "#/definitions/DnsConfig"
+    }
+  },
+  "definitions": {
+    "AccountConfig": {
+      "type": "object",
+      "required": [
+        "auth_key",
+        "zone_id"
+      ],
+      "properties": {
+        "auth_key": {
+          "type": "string"
+        },
+        "zone_id": {
+          "type": "string"
+        }
+      }
+    },
+    "DnsConfig": {
+      "type": "object",
+      "required": [
+        "proxied",
+        "record",
+        "type"
+      ],
+      "properties": {
+        "proxied": {
+          "type": "boolean"
+        },
+        "record": {
+          "type": "string"
+        },
+        "type": {
+          "$ref": "#/definitions/DnsType"
+        }
+      }
+    },
+    "DnsType": {
+      "type": "string",
+      "enum": [
+        "A",
+        "AAAA"
+      ]
+    }
+  }
+}
