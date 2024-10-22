@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.2](https://github.com/eoeo-org/cloudflare-ip-address-changer-rs/compare/v0.5.1...v0.5.2) (2024-10-22)
+
+
+### Dependencies
+
+* update rust crate serde_json to v1.0.132 ([#21](https://github.com/eoeo-org/cloudflare-ip-address-changer-rs/issues/21)) ([394d2f3](https://github.com/eoeo-org/cloudflare-ip-address-changer-rs/commit/394d2f32bf315667f03bede3d2df74680f64b870))
+
 ## [0.5.1](https://github.com/eoeo-org/cloudflare-ip-address-changer-rs/compare/v0.5.0...v0.5.1) (2024-10-22)
 
 
