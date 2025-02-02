@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.3](https://github.com/eoeo-org/cloudflare-ip-address-changer-rs/compare/v0.5.2...v0.5.3) (2025-02-02)
+
+
+### Build System
+
+* add optimized options for release build ([#32](https://github.com/eoeo-org/cloudflare-ip-address-changer-rs/issues/32)) ([41c76d7](https://github.com/eoeo-org/cloudflare-ip-address-changer-rs/commit/41c76d74dad74d62420ae5b00143ff70eb81c8bc))
+
 ## [0.5.2](https://github.com/eoeo-org/cloudflare-ip-address-changer-rs/compare/v0.5.1...v0.5.2) (2025-02-02)
 
 
