@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.5.2](https://github.com/eoeo-org/cloudflare-ip-address-changer-rs/compare/v0.5.1...v0.5.2) (2025-02-02)
+
+
+### Dependencies
+
+* lock file maintenance ([#30](https://github.com/eoeo-org/cloudflare-ip-address-changer-rs/issues/30)) ([8458d29](https://github.com/eoeo-org/cloudflare-ip-address-changer-rs/commit/8458d29d6e7415e5e1887f4016696ac4314800e3))
+* update rust crate reqwest to v0.12.12 ([#27](https://github.com/eoeo-org/cloudflare-ip-address-changer-rs/issues/27)) ([fe1d96a](https://github.com/eoeo-org/cloudflare-ip-address-changer-rs/commit/fe1d96a2dec39f6151cd326ff251be0dea11ce2e))
+* update rust crate serde to v1.0.217 ([#20](https://github.com/eoeo-org/cloudflare-ip-address-changer-rs/issues/20)) ([03b4a65](https://github.com/eoeo-org/cloudflare-ip-address-changer-rs/commit/03b4a65e6e9ac900315359ab001182b163e34712))
+* update rust crate serde_json to v1.0.132 ([#21](https://github.com/eoeo-org/cloudflare-ip-address-changer-rs/issues/21)) ([394d2f3](https://github.com/eoeo-org/cloudflare-ip-address-changer-rs/commit/394d2f32bf315667f03bede3d2df74680f64b870))
+* update rust crate serde_json to v1.0.138 ([#28](https://github.com/eoeo-org/cloudflare-ip-address-changer-rs/issues/28)) ([1e4bd88](https://github.com/eoeo-org/cloudflare-ip-address-changer-rs/commit/1e4bd881e6d823188109181226fbbc81a3e960ab))
+* update rust crate tokio to v1.43.0 ([#22](https://github.com/eoeo-org/cloudflare-ip-address-changer-rs/issues/22)) ([0db8c0d](https://github.com/eoeo-org/cloudflare-ip-address-changer-rs/commit/0db8c0d5e5676d2d526d912c95e940822ba259ed))
+
 ## [0.5.1](https://github.com/eoeo-org/cloudflare-ip-address-changer-rs/compare/v0.5.0...v0.5.1) (2024-10-22)
 
 
